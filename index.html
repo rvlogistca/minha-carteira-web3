@@ -1,35 +1,132 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minha Carteira Web3</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Ethers.js direto da web -->
-    <script src="https://cdn.jsdelivr.net/npm/ethers@6/dist/ethers.umd.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17152f">
+  <meta name="description" content="Carteira Web3 no navegador para aprendizado e consulta de saldo Ethereum.">
+  <title>Minha Carteira Web3</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6/dist/ethers.umd.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>💼 Minha Carteira Web3</h1>
-        <button id="btnCriar">🔑 Criar Nova Carteira</button>
-        
-        <div id="resultado" class="oculto">
-            <div class="card">
-                <p><strong>📌 Endereço:</strong></p>
-                <div class="codigo" id="endereco"></div>
-                
-                <p><strong>🔑 Frase de Recuperação:</strong></p>
-                <div class="codigo aviso" id="frase"></div>
-                
-                <p><strong>🔒 Chave Privada:</strong></p>
-                <div class="codigo aviso" id="chave"></div>
-                
-                <div class="alerta">
-                    ⚠️ ANOTE TUDO EM UM PAPEL! NUNCA COMPARTILHE!
-                </div>
-            </div>
+  <main class="container">
+    <header class="hero">
+      <div class="brand-icon" aria-hidden="true">◈</div>
+      <p class="eyebrow">WEB3 • ETHEREUM</p>
+      <h1>Minha Carteira <span>Web3</span></h1>
+      <p class="subtitle">Crie ou recupere uma carteira e consulte o saldo da rede principal Ethereum.</p>
+    </header>
+
+    <section class="notice" role="note">
+      <strong>⚠ Segurança primeiro</strong>
+      <p>Este projeto é experimental. Uma frase de recuperação ou chave privada dá controle total da carteira. Não use para guardar valores reais nem compartilhe esses dados. Para uso real, prefira uma carteira auditada, como MetaMask ou Trust Wallet.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Começar</h2>
+      <div class="primary-actions">
+        <button id="btnMetaMask" class="btn primary" type="button"><span aria-hidden="true">◈</span> Conectar MetaMask</button>
+        <button id="btnCriar" class="btn secondary" type="button"><span aria-hidden="true">＋</span> Criar carteira de aprendizado</button>
+        <button id="btnRecuperar" class="btn secondary" type="button"><span aria-hidden="true">↗</span> Recuperar carteira de aprendizado</button>
+      </div>
+      <p class="hint">Para enviar ETH real, use a conexão MetaMask. A carteira criada nesta página é apenas experimental e não é integrada automaticamente à MetaMask.</p>
+      <div id="metaMaskCard" class="balance hidden" aria-live="polite">
+        <div>
+          <p class="eyebrow">CONTA CONECTADA • ETHEREUM MAINNET</p>
+          <code id="metaMaskAddress" class="connected-address">—</code>
+          <p id="metaMaskBalance" class="balance-value">— <span>ETH</span></p>
+          <p id="metaMaskStatus" class="hint">Conecte a MetaMask para começar.</p>
         </div>
-    </div>
-    <script src="app.js"></script>
+        <button id="btnDesconectar" class="btn ghost" type="button">Desconectar</button>
+      </div>
+      <div id="sendPanel" class="recovery hidden">
+        <h2>Enviar ETH</h2>
+        <label for="destino">Endereço de destino</label>
+        <input id="destino" class="text-input" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="0x..." />
+        <label for="valorEnvio">Valor em ETH</label>
+        <input id="valorEnvio" class="text-input" type="number" min="0" step="any" inputmode="decimal" placeholder="0.01" />
+        <p class="hint">Confira cuidadosamente o endereço e a taxa de rede. A MetaMask mostrará a confirmação final antes de enviar.</p>
+        <button id="btnEnviar" class="btn primary" type="button">Revisar e enviar na MetaMask</button>
+        <div id="txResult" class="status" role="status"></div>
+      </div>
+
+      <div id="areaRecuperar" class="recovery hidden">
+        <label for="inputFrase">Frase de recuperação</label>
+        <textarea id="inputFrase" rows="3" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Digite sua frase de recuperação"></textarea>
+        <p class="hint">A frase é processada neste navegador. Nunca a envie a terceiros.</p>
+        <div class="inline-actions">
+          <button id="btnConfirmarRecuperar" class="btn primary" type="button">Recuperar carteira</button>
+          <button id="btnCancelarRecuperar" class="btn ghost" type="button">Cancelar</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="resultado" class="panel hidden" aria-live="polite">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">CARTEIRA ATUAL</p>
+          <h2>Seus dados</h2>
+        </div>
+        <span class="network-pill"><span class="dot"></span> Ethereum Mainnet</span>
+      </div>
+
+      <div class="field">
+        <label for="endereco">Endereço público</label>
+        <div class="value-row">
+          <code id="endereco">—</code>
+          <button class="icon-button copiar" data-alvo="endereco" type="button" aria-label="Copiar endereço" title="Copiar endereço">⧉</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="frase">Frase de recuperação <span class="sensitive">SENSÍVEL</span></label>
+        <div class="value-row">
+          <code id="frase" class="secret masked">••••••••••••••••••••••••••••••••</code>
+          <button class="icon-button reveal" data-alvo="frase" type="button" aria-label="Mostrar ou ocultar frase" title="Mostrar/ocultar">◉</button>
+          <button class="icon-button copiar" data-alvo="frase" type="button" aria-label="Copiar frase" title="Copiar frase">⧉</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="chave">Chave privada <span class="sensitive">SENSÍVEL</span></label>
+        <div class="value-row">
+          <code id="chave" class="secret masked">••••••••••••••••••••••••••••••••</code>
+          <button class="icon-button reveal" data-alvo="chave" type="button" aria-label="Mostrar ou ocultar chave privada" title="Mostrar/ocultar">◉</button>
+          <button class="icon-button copiar" data-alvo="chave" type="button" aria-label="Copiar chave privada" title="Copiar chave privada">⧉</button>
+        </div>
+      </div>
+
+      <div class="receive-box">
+        <div>
+          <p class="eyebrow">RECEBER ETH</p>
+          <p class="hint">Compartilhe somente seu endereço público. Nunca compartilhe sua frase ou chave privada.</p>
+        </div>
+        <canvas id="receiveQr" width="144" height="144" aria-label="QR code do endereço público"></canvas>
+      </div>
+      <div class="inline-actions action-row">
+        <button id="btnSaldo" class="btn primary" type="button">Consultar saldo ETH</button>
+        <button id="btnNova" class="btn secondary" type="button">Fechar carteira</button>
+      </div>
+
+      <div id="saldoArea" class="balance hidden" aria-live="polite">
+        <div>
+          <p class="eyebrow">SALDO NA REDE PRINCIPAL</p>
+          <p id="saldoValor" class="balance-value">— <span>ETH</span></p>
+          <p id="saldoDetalhe" class="hint">Consulta pública; não envia transações.</p>
+        </div>
+        <span class="eth-mark" aria-hidden="true">Ξ</span>
+      </div>
+      <p id="status" class="status" role="status"></p>
+    </section>
+
+    <footer>
+      <p>Saldo consultado via RPC público da Ethereum. A disponibilidade depende do serviço RPC e da conexão.</p>
+      <p>Esta página não envia, assina nem executa transações.</p>
+    </footer>
+  </main>
+  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
