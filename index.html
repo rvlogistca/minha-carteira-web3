@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a0a0a">
+  <title>Nexus Wallet • Multi-Chain</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6/dist/ethers.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <main class="container">
+    <header class="hero">
+      <div class="brand-icon">◈</div>
+      <p class="eyebrow">NEXUS PROTOCOL • MULTI-CHAIN</p>
+      <h1>Nexus <span>Wallet</span></h1>
+      <p class="subtitle">Carteira Web3 real • Todas as redes principais • Controle total no navegador</p>
+    </header>
+
+    <section class="notice">
+      <strong>⚠ Segurança</strong>
+      <p>Chaves e frases ficam apenas no seu navegador. Nunca compartilhe. Para valores reais use MetaMask, Trust Wallet ou Safe + hardware wallet.</p>
+    </section>
+
+    <!-- Controles principais -->
+    <section class="panel">
+      <div class="section-heading">
+        <h2>Conexão</h2>
+        <div class="network-selector">
+          <select id="networkSelect">
+            <option value="1">Ethereum</option>
+            <option value="137">Polygon</option>
+            <option value="56">BSC</option>
+            <option value="42161">Arbitrum</option>
+            <option value="10">Optimism</option>
+            <option value="8453">Base</option>
+            <option value="43114">Avalanche</option>
+            <option value="250">Fantom</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="primary-actions">
+        <button id="btnMetaMask" class="btn primary">◈ MetaMask</button>
+        <button id="btnTrust" class="btn primary">◆ Trust Wallet</button>
+        <button id="btnSafe" class="btn primary">⬡ Safe</button>
+        <button id="btnCriar" class="btn secondary">＋ Criar Carteira</button>
+        <button id="btnRecuperar" class="btn secondary">↗ Recuperar Carteira</button>
+      </div>
+      <p class="hint" style="margin-top:12px">MetaMask e Trust Wallet funcionam no navegador. Safe funciona melhor via WalletConnect ou extensão Safe.</p>
+
+      <!-- Carteira externa conectada -->
+      <div id="metaMaskCard" class="dashboard-card hidden">
+        <div class="gauge-ring">
+          <div class="gauge-inner">
+            <span class="gauge-label" id="walletTypeLabel">CONECTADA</span>
+            <span id="metaMaskBalance" class="gauge-value">—</span>
+            <span class="gauge-unit" id="metaMaskSymbol">ETH</span>
+          </div>
+        </div>
+        <div class="card-info">
+          <p class="eyebrow" id="walletNameLabel">CONTA ATIVA</p>
+          <code id="metaMaskAddress" class="connected-address">—</code>
+          <p id="metaMaskStatus" class="hint">Pronto para transações</p>
+          <button id="btnDesconectar" class="btn ghost">Desconectar</button>
+        </div>
+      </div>
+
+      <!-- Enviar -->
+      <div id="sendPanel" class="recovery hidden">
+        <h2>Enviar</h2>
+        <label>Endereço de destino</label>
+        <input id="destino" class="text-input" type="text" placeholder="0x..." spellcheck="false">
+        <label>Valor</label>
+        <input id="valorEnvio" class="text-input" type="number" min="0" step="any" placeholder="0.01">
+        <button id="btnEnviar" class="btn primary">Revisar e Enviar</button>
+        <div id="txResult" class="status"></div>
+      </div>
+
+      <!-- Recuperar -->
+      <div id="areaRecuperar" class="recovery hidden">
+        <label>Frase de recuperação (12/24 palavras)</label>
+        <textarea id="inputFrase" rows="3" placeholder="Digite a frase completa"></textarea>
+        <div class="inline-actions">
+          <button id="btnConfirmarRecuperar" class="btn primary">Recuperar</button>
+          <button id="btnCancelarRecuperar" class="btn ghost">Cancelar</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Carteira local -->
+    <section id="resultado" class="panel hidden">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">CARTEIRA LOCAL</p>
+          <h2>Seus Dados</h2>
+        </div>
+        <span class="network-pill"><span class="dot"></span> <span id="currentNetworkName">Ethereum</span></span>
+      </div>
+
+      <div class="field">
+        <label>Endereço Público</label>
+        <div class="value-row">
+          <code id="endereco">—</code>
+          <button class="icon-button copiar" data-alvo="endereco">⧉</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Frase de Recuperação <span class="sensitive">SENSÍVEL</span></label>
+        <div class="value-row">
+          <code id="frase" class="secret masked">••••••••••••••••••••••••••••••••</code>
+          <button class="icon-button reveal" data-alvo="frase">◉</button>
+          <button class="icon-button copiar" data-alvo="frase">⧉</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Chave Privada <span class="sensitive">SENSÍVEL</span></label>
+        <div class="value-row">
+          <code id="chave" class="secret masked">••••••••••••••••••••••••••••••••</code>
+          <button class="icon-button reveal" data-alvo="chave">◉</button>
+          <button class="icon-button copiar" data-alvo="chave">⧉</button>
+        </div>
+      </div>
+
+      <div class="receive-box">
+        <div>
+          <p class="eyebrow">RECEBER</p>
+          <p class="hint">Compartilhe apenas o endereço público</p>
+        </div>
+        <canvas id="receiveQr" width="144" height="144"></canvas>
+      </div>
+
+      <div class="inline-actions action-row">
+        <button id="btnSaldo" class="btn primary">Consultar Saldo</button>
+        <button id="btnNova" class="btn secondary">Fechar Carteira</button>
+      </div>
+
+      <div id="saldoArea" class="dashboard-card hidden">
+        <div class="gauge-ring small">
+          <div class="gauge-inner">
+            <span class="gauge-label">SALDO</span>
+            <span id="saldoValor" class="gauge-value">—</span>
+            <span class="gauge-unit" id="saldoSymbol">ETH</span>
+          </div>
+        </div>
+        <div class="card-info">
+          <p class="eyebrow">REDE PRINCIPAL</p>
+          <p id="saldoDetalhe" class="hint">Consulta somente leitura</p>
+        </div>
+      </div>
+      <p id="status" class="status"></p>
+    </section>
+
+    <footer>
+      <p>Nexus Wallet • Multi-Chain • Dados processados localmente no navegador</p>
+    </footer>
+  </main>
+
+  <div id="toast" class="toast hidden"></div>
+  <script src="app.js"></script>
+</body>
+</html>
