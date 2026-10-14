@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Carteira Web3</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Ethers.js direto da web -->
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6/dist/ethers.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>💼 Minha Carteira Web3</h1>
+        <button id="btnCriar">🔑 Criar Nova Carteira</button>
+        
+        <div id="resultado" class="oculto">
+            <div class="card">
+                <p><strong>📌 Endereço:</strong></p>
+                <div class="codigo" id="endereco"></div>
+                
+                <p><strong>🔑 Frase de Recuperação:</strong></p>
+                <div class="codigo aviso" id="frase"></div>
+                
+                <p><strong>🔒 Chave Privada:</strong></p>
+                <div class="codigo aviso" id="chave"></div>
+                
+                <div class="alerta">
+                    ⚠️ ANOTE TUDO EM UM PAPEL! NUNCA COMPARTILHE!
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
