@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0a0a0a">
+  <meta name="theme-color" content="#050505">
+  <meta name="description" content="Nexus Wallet - Carteira Web3 multi-chain com suporte a Binance Web3, MetaMask e Trust Wallet">
   <title>Nexus Wallet • Multi-Chain & Binance Web3</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/ethers@6/dist/ethers.umd.min.js"></script>
@@ -29,12 +30,12 @@
         <h2>🔗 Conectar Carteira</h2>
         <div class="network-selector">
           <select id="networkSelect">
-            <option value="56" data-name="BNB Chain" data-symbol="BNB" selected>BNB Chain (BSC)</option>
-            <option value="97" data-name="BSC Testnet" data-symbol="tBNB">BSC Testnet</option>
-            <option value="1" data-name="Ethereum" data-symbol="ETH">Ethereum</option>
-            <option value="137" data-name="Polygon" data-symbol="MATIC">Polygon</option>
-            <option value="42161" data-name="Arbitrum" data-symbol="ETH">Arbitrum</option>
-            <option value="8453" data-name="Base" data-symbol="ETH">Base</option>
+            <option value="56" selected>BNB Chain (BSC)</option>
+            <option value="97">BSC Testnet</option>
+            <option value="1">Ethereum</option>
+            <option value="137">Polygon</option>
+            <option value="42161">Arbitrum</option>
+            <option value="8453">Base</option>
           </select>
         </div>
       </div>
@@ -76,116 +77,10 @@
       <div id="sendPanel" class="recovery hidden">
         <h2>📤 Enviar Transação</h2>
         <label>Endereço de destino</label>
-        <input id="destino" class="text-input" type="text" placeholder="0x..." spellcheck="false">
+        <input id="destino" class="text-input" type="text" placeholder="0x..." spellcheck="false" autocomplete="off">
         <label>Valor (<span id="sendSymbol">BNB</span>)</label>
-        <input id="valorEnvio" class="text-input" type="number" min="0" step="0.0001" placeholder="0.0000">
+        <input id="valorEnvio" class="text-input" type="number" min="0" step="any" placeholder="0.0000">
         <label>Taxa de Gas (Gwei)</label>
         <input id="gasPrice" class="text-input" type="number" min="1" value="5" placeholder="5">
-        <button id="btnEnviar" class="btn primary">✓ Revisar e Enviar</button>
-        <div id="txResult" class="status"></div>
-        <div id="txHistory" class="tx-history"></div>
-      </div>
-
-      <div id="areaRecuperar" class="recovery hidden">
-        <h3>🔄 Recuperar Carteira</h3>
-        <label>Frase de recuperação (12/24 palavras)</label>
-        <textarea id="inputFrase" rows="3" placeholder="Digite a frase completa"></textarea>
-        <p style="margin: 10px 0; font-size: 13px; color: #aaa;">— OU —</p>
-        <label>Chave Privada</label>
-        <input type="password" id="inputChavePrivada" class="text-input" placeholder="5d051f2a8c7e3b9d...">
-        <label style="display:flex;align-items:center;gap:8px;margin:8px 0 12px;cursor:pointer;">
-          <input type="checkbox" id="mostrarChave"> Mostrar chave
-        </label>
-        <div class="inline-actions">
-          <button id="btnConfirmarRecuperar" class="btn primary">Recuperar</button>
-          <button id="btnCancelarRecuperar" class="btn ghost">Cancelar</button>
-        </div>
-      </div>
-    </section>
-
-    <section id="resultado" class="panel hidden">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">💼 CARTEIRA LOCAL</p>
-          <h2>Seus Dados</h2>
-        </div>
-        <span class="network-pill"><span class="dot"></span> <span id="currentNetworkName">BNB Chain</span></span>
-      </div>
-
-      <div class="field">
-        <label>📌 Endereço Público</label>
-        <div class="value-row">
-          <code id="endereco">—</code>
-          <button class="icon-button copiar" data-alvo="endereco">📋</button>
-        </div>
-      </div>
-
-      <div class="field">
-        <label>🔑 Frase de Recuperação <span class="sensitive">SENSÍVEL</span></label>
-        <div class="value-row">
-          <code id="frase" class="secret masked">••••••••••••••••••••••••••••••••</code>
-          <button class="icon-button reveal" data-alvo="frase">👁</button>
-          <button class="icon-button copiar" data-alvo="frase">📋</button>
-        </div>
-      </div>
-
-      <div class="field">
-        <label>🔒 Chave Privada <span class="sensitive">SENSÍVEL</span></label>
-        <div class="value-row">
-          <code id="chave" class="secret masked">••••••••••••••••••••••••••••••••</code>
-          <button class="icon-button reveal" data-alvo="chave">👁</button>
-          <button class="icon-button copiar" data-alvo="chave">📋</button>
-        </div>
-      </div>
-
-      <div id="saldoArea" class="dashboard-card hidden">
-        <div class="gauge-ring">
-          <div class="gauge-inner">
-            <span class="gauge-label">SALDO</span>
-            <span id="saldoValor" class="gauge-value">—</span>
-            <span class="gauge-unit" id="saldoSymbol">BNB</span>
-          </div>
-        </div>
-        <div class="card-info">
-          <p class="eyebrow">SALDO EM USD</p>
-          <p class="usd-value">$<span id="saldoUSD">0.00</span></p>
-          <p id="saldoDetalhe" class="hint">Atualizado em tempo real</p>
-        </div>
-      </div>
-
-      <div class="receive-box">
-        <div>
-          <p class="eyebrow">📥 RECEBER</p>
-          <p class="hint">Compartilhe apenas o endereço público</p>
-        </div>
-        <canvas id="receiveQr" width="144" height="144"></canvas>
-      </div>
-
-      <div class="chart-container">
-        <h3>📊 Variação de Preço</h3>
-        <canvas id="localPriceChart" height="180"></canvas>
-      </div>
-
-      <div class="inline-actions action-row">
-        <button id="btnSaldo" class="btn primary">💰 Consultar Saldo</button>
-        <button id="btnEnviarAbrir" class="btn primary">📤 Enviar</button>
-        <button id="btnNova" class="btn secondary">🔒 Fechar Carteira</button>
-      </div>
-
-      <div id="txHistoryLocal" class="tx-history hidden">
-        <h4>📋 Histórico de Transações</h4>
-        <div id="txListLocal"></div>
-      </div>
-
-      <p id="status" class="status"></p>
-    </section>
-
-    <footer>
-      <p>Nexus Wallet • Multi-Chain • BNB Chain & Binance Web3 • Dados processados localmente no navegador</p>
-    </footer>
-  </main>
-
-  <div id="toast" class="toast hidden"></div>
-  <script src="app.js"></script>
-</body>
-</html>
+        <button id="btnEnviar" class="btn primary">✓
+... 
