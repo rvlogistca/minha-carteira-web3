@@ -82,5 +82,110 @@
         <input id="valorEnvio" class="text-input" type="number" min="0" step="any" placeholder="0.0000">
         <label>Taxa de Gas (Gwei)</label>
         <input id="gasPrice" class="text-input" type="number" min="1" value="5" placeholder="5">
-        <button id="btnEnviar" class="btn primary">✓
-... 
+        <button id="btnEnviar" class="btn primary">✓ Revisar e Enviar</button>
+        <div id="txResult" class="status"></div>
+      </div>
+
+      <div id="areaRecuperar" class="recovery hidden">
+        <h3>🔄 Recuperar Carteira</h3>
+        <label>Frase de recuperação (12 ou 24 palavras)</label>
+        <textarea id="inputFrase" rows="3" placeholder="Digite a frase completa"></textarea>
+        <p class="or-divider">— OU —</p>
+        <label>Chave Privada</label>
+        <input type="password" id="inputChavePrivada" class="text-input" placeholder="0x... ou sem 0x">
+        <label class="checkbox-label">
+          <input type="checkbox" id="mostrarChave"> Mostrar chave
+        </label>
+        <div class="inline-actions">
+          <button id="btnConfirmarRecuperar" class="btn primary">Recuperar</button>
+          <button id="btnCancelarRecuperar" class="btn ghost">Cancelar</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="resultado" class="panel hidden">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">💼 CARTEIRA LOCAL</p>
+          <h2>Seus Dados</h2>
+        </div>
+        <span class="network-pill"><span class="dot"></span> <span id="currentNetworkName">BNB Chain</span></span>
+      </div>
+
+      <div class="field">
+        <label>📌 Endereço Público</label>
+        <div class="value-row">
+          <code id="endereco">—</code>
+          <button class="icon-button copiar" data-alvo="endereco" title="Copiar">📋</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>🔑 Frase de Recuperação <span class="sensitive">SENSÍVEL</span></label>
+        <div class="value-row">
+          <code id="frase" class="secret masked">••••••••••••••••••••••••••••••••</code>
+          <button class="icon-button reveal" data-alvo="frase" title="Mostrar/Ocultar">👁</button>
+          <button class="icon-button copiar" data-alvo="frase" title="Copiar">📋</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>🔒 Chave Privada <span class="sensitive">SENSÍVEL</span></label>
+        <div class="value-row">
+          <code id="chave" class="secret masked">••••••••••••••••••••••••••••••••</code>
+          <button class="icon-button reveal" data-alvo="chave" title="Mostrar/Ocultar">👁</button>
+          <button class="icon-button copiar" data-alvo="chave" title="Copiar">📋</button>
+        </div>
+      </div>
+
+      <div id="saldoArea" class="dashboard-card hidden">
+        <div class="gauge-ring">
+          <div class="gauge-inner">
+            <span class="gauge-label">SALDO</span>
+            <span id="saldoValor" class="gauge-value">—</span>
+            <span class="gauge-unit" id="saldoSymbol">BNB</span>
+          </div>
+        </div>
+        <div class="card-info">
+          <p class="eyebrow">SALDO EM USD</p>
+          <p class="usd-value">$<span id="saldoUSD">0.00</span></p>
+          <p id="saldoDetalhe" class="hint">Atualizado em tempo real</p>
+        </div>
+      </div>
+
+      <div class="receive-box">
+        <div>
+          <p class="eyebrow">📥 RECEBER</p>
+          <p class="hint">Compartilhe apenas o endereço público</p>
+        </div>
+        <canvas id="receiveQr" width="144" height="144"></canvas>
+      </div>
+
+      <div class="chart-container">
+        <h3>📊 Variação de Preço</h3>
+        <canvas id="localPriceChart" height="180"></canvas>
+      </div>
+
+      <div class="inline-actions action-row">
+        <button id="btnSaldo" class="btn primary">💰 Consultar Saldo</button>
+        <button id="btnEnviarAbrir" class="btn primary">📤 Enviar</button>
+        <button id="btnNova" class="btn secondary">🔒 Fechar Carteira</button>
+      </div>
+
+      <div id="txHistoryLocal" class="tx-history hidden">
+        <h4>📋 Histórico de Transações</h4>
+        <div id="txListLocal"></div>
+      </div>
+
+      <p id="status" class="status"></p>
+    </section>
+
+    <footer>
+      <p>Nexus Wallet • Multi-Chain • BNB Chain & Binance Web3 • Dados processados localmente no navegador</p>
+    </footer>
+  </main>
+
+  <div id="toast" class="toast hidden"></div>
+  <script src="app.js"></script>
+</body>
+</html>
