@@ -24,20 +24,19 @@
       <p>Chaves e frases ficam apenas no seu navegador. Nunca compartilhe. Para valores reais use MetaMask, Trust Wallet ou Safe + hardware wallet.</p>
     </section>
 
-    <!-- Controles principais -->
     <section class="panel">
       <div class="section-heading">
         <h2>Conexão</h2>
         <div class="network-selector">
           <select id="networkSelect">
-            <option value="1">Ethereum</option>
-            <option value="137">Polygon</option>
-            <option value="56">BSC</option>
-            <option value="42161">Arbitrum</option>
-            <option value="10">Optimism</option>
-            <option value="8453">Base</option>
-            <option value="43114">Avalanche</option>
-            <option value="250">Fantom</option>
+            <option value="1" data-name="Ethereum" data-symbol="ETH" selected>Ethereum</option>
+            <option value="137" data-name="Polygon" data-symbol="MATIC">Polygon</option>
+            <option value="56" data-name="BSC" data-symbol="BNB">BSC</option>
+            <option value="42161" data-name="Arbitrum" data-symbol="ETH">Arbitrum</option>
+            <option value="10" data-name="Optimism" data-symbol="ETH">Optimism</option>
+            <option value="8453" data-name="Base" data-symbol="ETH">Base</option>
+            <option value="43114" data-name="Avalanche" data-symbol="AVAX">Avalanche</option>
+            <option value="250" data-name="Fantom" data-symbol="FTM">Fantom</option>
           </select>
         </div>
       </div>
@@ -51,7 +50,6 @@
       </div>
       <p class="hint" style="margin-top:12px">MetaMask e Trust Wallet funcionam no navegador. Safe funciona melhor via WalletConnect ou extensão Safe.</p>
 
-      <!-- Carteira externa conectada -->
       <div id="metaMaskCard" class="dashboard-card hidden">
         <div class="gauge-ring">
           <div class="gauge-inner">
@@ -68,21 +66,26 @@
         </div>
       </div>
 
-      <!-- Enviar -->
       <div id="sendPanel" class="recovery hidden">
-        <h2>Enviar</h2>
+        <h2>Enviar Transação</h2>
         <label>Endereço de destino</label>
         <input id="destino" class="text-input" type="text" placeholder="0x..." spellcheck="false">
         <label>Valor</label>
-        <input id="valorEnvio" class="text-input" type="number" min="0" step="any" placeholder="0.01">
+        <input id="valorEnvio" class="text-input" type="number" min="0" step="any" placeholder="0.00">
         <button id="btnEnviar" class="btn primary">Revisar e Enviar</button>
         <div id="txResult" class="status"></div>
       </div>
 
-      <!-- Recuperar -->
       <div id="areaRecuperar" class="recovery hidden">
+        <h3>Recuperar Carteira</h3>
         <label>Frase de recuperação (12/24 palavras)</label>
         <textarea id="inputFrase" rows="3" placeholder="Digite a frase completa"></textarea>
+        <p style="margin: 10px 0; font-size: 13px; color: #aaa;">— OU —</p>
+        <label>Chave Privada</label>
+        <input type="password" id="inputChavePrivada" class="text-input" placeholder="5d051f2a8c7e3b9d...">
+        <label style="display:flex;align-items:center;gap:8px;margin:8px 0 12px;cursor:pointer;">
+          <input type="checkbox" id="mostrarChave"> Mostrar chave
+        </label>
         <div class="inline-actions">
           <button id="btnConfirmarRecuperar" class="btn primary">Recuperar</button>
           <button id="btnCancelarRecuperar" class="btn ghost">Cancelar</button>
@@ -90,7 +93,6 @@
       </div>
     </section>
 
-    <!-- Carteira local -->
     <section id="resultado" class="panel hidden">
       <div class="section-heading">
         <div>
@@ -136,6 +138,7 @@
 
       <div class="inline-actions action-row">
         <button id="btnSaldo" class="btn primary">Consultar Saldo</button>
+        <button id="btnEnviarAbrir" class="btn primary">↗ Enviar</button>
         <button id="btnNova" class="btn secondary">Fechar Carteira</button>
       </div>
 
