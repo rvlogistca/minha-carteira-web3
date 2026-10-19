@@ -6,22 +6,22 @@ Tema visual inspirado na Binance (dourado + preto).
 
 ---
 
-## Funcionalidades
+## ✨ Funcionalidades
 
 - Conectar **Binance Web3 Wallet**, **MetaMask** e **Trust Wallet**
 - Criar carteira local (frase de recuperação + chave privada)
-- Recuperar por **frase** ou **chave privada**
-- Consultar saldo em tempo real + valor em USD
-- Gráfico de preço (CoinGecko)
-- Enviar tokens nativos (local ou carteira externa)
+- Recuperar carteira por **frase mnemônica** ou **chave privada**
+- Consultar saldo em tempo real + valor convertido em USD
+- Gráfico de variação de preço (dados da CoinGecko)
+- Enviar tokens nativos (carteira local ou conectada)
 - Histórico de transações
 - QR Code para receber
 - Troca de rede automática
-- Interface 100% responsiva
+- Interface 100% responsiva (celular + desktop)
 
 ---
 
-## Redes suportadas
+## 🌐 Redes suportadas
 
 | Rede         | Chain ID | Símbolo |
 |--------------|----------|---------|
@@ -34,80 +34,37 @@ Tema visual inspirado na Binance (dourado + preto).
 
 ---
 
-## Carteiras suportadas
+## 🔌 Carteiras suportadas
 
 | Carteira              | Tipo              | Observação |
 |-----------------------|-------------------|----------|
-| Binance Web3 Wallet   | Extensão          | Prioridade (tema Binance) |
-| MetaMask              | Extensão / Mobile | Detecta automaticamente |
-| Trust Wallet          | Extensão / Mobile | Deep link no celular |
-| Carteira Local        | Navegador         | Apenas para aprendizado |
+| 🟡 Binance Web3 Wallet| Extensão Navegador| Recomendada |
+| 🦊 MetaMask           | Extensão / Mobile | Detecta automaticamente |
+| ◆ Trust Wallet        | App Mobile        | Abre pelo deep link |
+| 💼 Carteira Local     | Apenas no navegador | Para aprendizado — NÃO use em produção |
 
 ---
 
-## Como usar
+## 🚀 Como usar
 
-### Opção 1 – GitHub Pages (recomendado)
+### Opção 1 — GitHub Pages (recomendado)
 
-1. Vá em **Settings → Pages**
-2. Source: **Deploy from a branch** → `main` → `/ (root)`
-3. Salve e aguarde alguns minutos
-4. Acesse a URL gerada (ex: `https://rvlogistca.github.io/minha-carteira-web3`)
+1. No seu repositório, vá em **Settings → Pages**
+2. Em **Source**, escolha: **Deploy from a branch**
+3. Selecione: `main` → `/ (root)`
+4. Clique em **Save** e aguarde 2–3 minutos
+5. Acesse a URL gerada: `https://rvlogistca.github.io/minha-carteira-web3/`
 
-### Opção 2 – Local
+### Opção 2 — Rodar localmente
 
 ```bash
+# Clone o repositório
 git clone https://github.com/rvlogistca/minha-carteira-web3.git
+
+# Entre na pasta
 cd minha-carteira-web3
+
+# Abra no navegador
+# Opção A: Clique duas vezes em index.html
+# Opção B: Use um servidor local (recomendado)
 npx serve .
-```
-
-Abra o endereço que aparecer no terminal.
-
----
-
-## Segurança
-
-> **Atenção importante**
-
-- A frase de recuperação e a chave privada **nunca saem do seu navegador**.
-- **Não use a carteira local** para guardar valores reais.
-- Para valores reais use sempre **Binance Web3 Wallet**, **MetaMask** ou **Trust Wallet** + hardware wallet.
-- Nunca compartilhe sua frase ou chave privada.
-- Este projeto é experimental e educacional.
-
----
-
-## Tecnologias
-
-- [ethers.js v6](https://docs.ethers.org/)
-- [Chart.js](https://www.chartjs.org/)
-- [QRCode.js](https://github.com/soldair/node-qrcode)
-- CoinGecko API (preços)
-- HTML5 + CSS3 + JavaScript puro
-
----
-
-## Estrutura
-
-```
-minha-carteira-web3/
-├── index.html      # Interface
-├── style.css       # Tema Binance (dourado)
-├── app.js          # Lógica completa
-├── LICENSE         # MIT
-└── README.md       # Este arquivo
-```
-
----
-
-## Licença
-
-MIT – use, modifique e distribua livremente.
-
----
-
-## Aviso
-
-Este software é fornecido “como está”, sem garantias.  
-Use por sua conta e risco. Sempre confira endereço e valor antes de confirmar qualquer transação.
